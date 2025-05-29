@@ -1,0 +1,25 @@
+# Common configuration for all services
+jwt:
+  secret: ${JWT_SECRET:BusesLkSecretKey2025VeryLongAndSecureKey}
+  access-token-expiration: 3600
+  refresh-token-expiration: 86400
+
+spring:
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.spatial.dialect.postgis.PostgisPG95Dialect
+        format_sql: true
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  metrics:
+    export:
+      prometheus:
+        enabled: true
