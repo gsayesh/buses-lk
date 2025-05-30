@@ -12,28 +12,20 @@ public interface RouteServiceClient {
     @GetMapping("/api/v1/routes/{routeId}")
     RouteInfo getRoute(@PathVariable UUID routeId);
 
+    /**
+     * Route information DTO for inter-service communication
+     */
     @lombok.Data
+    @lombok.NoArgsConstructor
+    @lombok.AllArgsConstructor
+    @lombok.Builder
     class RouteInfo {
         private UUID id;
         private String routeNumber;
         private String routeNameEn;
         private String originCity;
         private String destinationCity;
-    }
-}
-
-// Fallback implementation
-@Component
-@Slf4j
-class RouteServiceFallback implements RouteServiceClient {
-
-    @Override
-    public RouteInfo getRoute(UUID routeId) {
-        log.warn("Route service unavailable, returning fallback for route: {}", routeId);
-        RouteInfo fallback = new RouteInfo();
-        fallback.setId(routeId);
-        fallback.setRouteNumber("Unknown");
-        fallback.setRouteNameEn("Route information unavailable");
-        return fallback;
+        private Double totalDistanceKm;
+        private boolean isRotational;
     }
 }
