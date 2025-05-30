@@ -7,7 +7,7 @@
 
     <groupId>lk.buses</groupId>
     <artifactId>buses-lk-parent</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
 
     <name>Buses.lk - Parent</name>
@@ -68,25 +68,20 @@
 
     <modules>
         <!-- Common Libraries -->
-<!--        <module>common/common-core</module>-->
-<!--        <module>common/common-security</module>-->
-<!--        <module>common/common-database</module>-->
-<!--        <module>common/common-messaging</module>-->
+        <module>shared/common-core</module>
+        <module>shared/common-security</module>
+        <module>shared/common-database</module>
+        <module>shared/common-messaging</module>
 
-<!--        &lt;!&ndash; Infrastructure Services &ndash;&gt;-->
-<!--        <module>services/infrastructure/discovery-service</module>-->
-<!--        <module>services/infrastructure/config-service</module>-->
-<!--        <module>services/infrastructure/gateway-service</module>-->
+        <!-- Infrastructure Services -->
+        <module>services/discovery-service</module>
+        <module>services/config-service</module>
+        <module>services/gateway-service</module>
 
-        <!-- Business Services (to be added in later phases) -->
-        <!-- <module>services/business/user-service</module> -->
-        <!-- <module>services/business/bus-service</module> -->
-        <!-- <module>services/business/route-service</module> -->
-        <!-- <module>services/business/booking-service</module> -->
-        <!-- <module>services/business/payment-service</module> -->
-        <!-- <module>services/business/notification-service</module> -->
-        <!-- <module>services/business/analytics-service</module> -->
-        <!-- <module>services/business/admin-service</module> -->
+        <!-- Business Services -->
+        <module>services/user-service</module>
+        <module>services/bus-service</module>
+        <module>services/route-service</module>
     </modules>
 
     <dependencyManagement>

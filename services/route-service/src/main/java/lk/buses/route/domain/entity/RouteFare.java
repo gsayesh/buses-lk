@@ -8,42 +8,44 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
-@Table(name = "fare_structures", indexes = {
-        @Index(name = "idx_fare_structure_active", columnList = "is_active"),
-        @Index(name = "idx_fare_structure_date", columnList = "effective_date")
-})
+@Table(name = "route_fares",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"route_id", "from_stop_id", "to_stop_id", "fare_structure_id"}),
+        indexes = {
+                @Index(name = "idx_route_fares_lookup", columnList = "route_id, from_stop_id, to_stop_id")
+        }
+)
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class FareStructure {
+public class RouteFare {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "effective_date", nullable = false)
-    private LocalDate effectiveDate;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "route_id", nullable = false)
+    private Route route;
 
-    @Column(name = "minimum_fare", nullable = false, precision = 10, scale = 2)
-    private BigDecimal minimumFare;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fare_structure_id", nullable = false)
+    private FareStructure fareStructure;
 
-    @Column(name = "fare_per_km", nullable = false, precision = 10, scale = 4)
-    private BigDecimal farePerKm;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "from_stop_id", nullable = false)
+    private RouteStop fromStop;
 
-    @Column(name = "created_by")
-    private UUID createdBy;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "to_stop_id", nullable = false)
+    private RouteStop toStop;
 
-    @Column(columnDefinition = "TEXT")
-    private String notes;
-
-    @Column(name = "is_active")
-    private boolean isActive;
+    @Column(name = "base_fare", nullable = false, precision = 10, scale = 2)
+    private BigDecimal baseFare;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)

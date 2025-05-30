@@ -1,5 +1,6 @@
 package lk.buses.user.domain.service;
 
+import lk.buses.common.core.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;

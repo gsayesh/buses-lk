@@ -1,8 +1,11 @@
 package lk.buses.route.application.dto.request;
 
 import jakarta.validation.constraints.*;
+import lk.buses.common.core.enums.ServiceCategory;
 import lombok.Data;
+
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
