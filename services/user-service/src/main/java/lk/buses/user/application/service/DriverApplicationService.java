@@ -1,99 +1,114 @@
 package lk.buses.user.application.service;
 
-import lk.buses.common.core.dto.PageableRequest;
+import lk.buses.common.core.enums.UserRole;
+import lk.buses.common.core.exception.ResourceNotFoundException;
 import lk.buses.common.core.exception.UnauthorizedException;
 import lk.buses.user.application.dto.request.*;
 import lk.buses.user.application.dto.response.*;
-import lk.buses.user.application.mapper.UserMapper;
+import lk.buses.user.application.mapper.DriverMapper;
+import lk.buses.user.domain.entity.DriverProfile;
 import lk.buses.user.domain.entity.User;
 import lk.buses.user.domain.repository.UserRepository;
-import lk.buses.user.domain.service.UserDomainService;
+import lk.buses.user.domain.service.DriverDomainService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class UserApplicationService {
+public class DriverApplicationService {
 
     private final UserRepository userRepository;
-    private final UserDomainService userDomainService;
-    private final UserMapper userMapper;
+    private final DriverDomainService driverDomainService;
+    private final DriverMapper driverMapper;
 
-    public UserResponse getUserById(UUID userId) {
-        log.debug("Getting user by ID: {}", userId);
+    @Transactional
+    public DriverProfileResponse registerAsDriver(DriverRegistrationRequest request) {
+        log.info("Registering user as driver");
 
+        UUID userId = getCurrentUserId();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", userId.toString()));
 
-        return userMapper.toResponse(user);
-    }
+        // Update user role to DRIVER
+        user.setRole(UserRole.DRIVER);
+        userRepository.save(user);
 
-    public UserResponse getCurrentUser() {
-        UUID userId = getCurrentUserId();
-        return getUserById(userId);
-    }
-
-    @Transactional
-    public UserResponse updateUser(UUID userId, UserUpdateRequest request) {
-        log.debug("Updating user: {}", userId);
-
-        // Verify current user can update this profile
-        UUID currentUserId = getCurrentUserId();
-        if (!currentUserId.equals(userId)) {
-            throw new UnauthorizedException("Cannot update other user's profile");
-        }
-
-        User updates = new User();
-        updates.setFirstName(request.getFirstName());
-        updates.setLastName(request.getLastName());
-        updates.setEmail(request.getEmail());
-        updates.setPreferredLanguage(request.getPreferredLanguage());
-
-        User updatedUser = userDomainService.updateUser(userId, updates);
-
-        return userMapper.toResponse(updatedUser);
-    }
-
-    @Transactional
-    public void changePassword(ChangePasswordRequest request) {
-        log.debug("Changing password for current user");
-
-        UUID userId = getCurrentUserId();
-        userDomainService.changePassword(userId, request.getOldPassword(), request.getNewPassword());
-    }
-
-    @Transactional
-    public void deactivateAccount() {
-        log.debug("Deactivating current user account");
-
-        UUID userId = getCurrentUserId();
-        userDomainService.deactivateUser(userId);
-
-        // Clear security context
-        SecurityContextHolder.clearContext();
-    }
-
-    public Page<UserResponse> searchUsers(PageableRequest request) {
-        log.debug("Searching users with page: {}, size: {}", request.getPage(), request.getSize());
-
-        PageRequest pageRequest = PageRequest.of(
-                request.getPage(),
-                request.getSize(),
-                Sort.by(Sort.Direction.valueOf(request.getSortDirection()), request.getSortBy())
+        // Create driver profile
+        DriverProfile profile = driverDomainService.createDriverProfile(
+                user,
+                request.getLicenseNumber(),
+                request.getOperatorId()
         );
 
-        Page<User> users = userRepository.findAll(pageRequest);
+        log.info("Driver profile created: {}", profile.getId());
+        return driverMapper.toResponse(profile);
+    }
 
-        return users.map(userMapper::toResponse);
+    @Transactional
+    public DriverProfileResponse approveDriver(DriverApprovalRequest request) {
+        log.info("Approving driver: {}", request.getDriverProfileId());
+
+        // Verify approver has admin rights
+        verifyAdminRole();
+
+        UUID approvedBy = getCurrentUserId();
+        DriverProfile profile = driverDomainService.approveDriver(
+                request.getDriverProfileId(),
+                approvedBy
+        );
+
+        return driverMapper.toResponse(profile);
+    }
+
+    @Transactional
+    public DriverProfileResponse assignBusToDriver(BusAssignmentRequest request) {
+        log.info("Assigning bus {} to driver {}", request.getBusId(), request.getDriverProfileId());
+
+        // Verify admin or operator role
+        verifyAdminOrOperatorRole();
+
+        DriverProfile profile = driverDomainService.assignBus(
+                request.getDriverProfileId(),
+                request.getBusId()
+        );
+
+        return driverMapper.toResponse(profile);
+    }
+
+    @Transactional
+    public void unassignBusFromDriver(UUID driverProfileId) {
+        log.info("Unassigning bus from driver: {}", driverProfileId);
+
+        verifyAdminOrOperatorRole();
+        driverDomainService.unassignBus(driverProfileId);
+    }
+
+    public List<DriverProfileResponse> getPendingApprovals() {
+        log.debug("Getting pending driver approvals");
+
+        verifyAdminRole();
+
+        List<DriverProfile> pendingProfiles = driverDomainService.getPendingApprovals();
+        return pendingProfiles.stream()
+                .map(driverMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    public List<DriverProfileResponse> getDriversByOperator(UUID operatorId) {
+        log.debug("Getting drivers for operator: {}", operatorId);
+
+        List<DriverProfile> drivers = driverDomainService.getDriversByOperator(operatorId);
+        return drivers.stream()
+                .map(driverMapper::toResponse)
+                .collect(Collectors.toList());
     }
 
     private UUID getCurrentUserId() {
@@ -102,5 +117,26 @@ public class UserApplicationService {
             throw new UnauthorizedException("User not authenticated");
         }
         return (UUID) authentication.getPrincipal();
+    }
+
+    private void verifyAdminRole() {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
+
+        if (!isAdmin) {
+            throw new UnauthorizedException("Admin access required");
+        }
+    }
+
+    private void verifyAdminOrOperatorRole() {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean hasAccess = authentication.getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN") ||
+                        auth.getAuthority().equals("ROLE_OPERATOR"));
+
+        if (!hasAccess) {
+            throw new UnauthorizedException("Admin or Operator access required");
+        }
     }
 }
