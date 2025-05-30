@@ -1,0 +1,93 @@
+# application.yml
+server:
+  port: 8082
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: bus-service
+  profiles:
+    active: local
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/buses_db
+    username: postgres
+    password: postgres123
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 600000
+      connection-timeout: 30000
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.spatial.dialect.postgis.PostgisPG95Dialect
+        format_sql: true
+        show_sql: false
+        default_schema: public
+    open-in-view: false
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+
+  redis:
+    host: localhost
+    port: 6379
+    password: redis123
+    timeout: 2000ms
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: admin123
+    virtual-host: /
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${random.value}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+logging:
+  level:
+    lk.buses: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+# WebSocket Configuration
+websocket:
+  endpoint: /ws
+  allowed-origins: "*"
+
+# Tracking Configuration
+tracking:
+  stale-threshold-minutes: 5
+  speed-limit:
+    highway: 80
+    city: 50
