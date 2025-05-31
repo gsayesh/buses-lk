@@ -26,14 +26,14 @@ public class TrackingWebSocketController {
     public BusLocationResponse handleLocationUpdate(LocationUpdateMessage message) {
         log.debug("Received WebSocket location update for bus: {}", message.getBusId());
 
-        LocationUpdateRequest request = LocationUpdateRequest.builder()
-                .latitude(message.getLatitude())
-                .longitude(message.getLongitude())
-                .speed(message.getSpeed())
-                .heading(message.getHeading())
-                .driverId(message.getDriverId())
-                .trackingSource(message.getTrackingSource())
-                .build();
+        // Create request using constructor and setters instead of builder
+        LocationUpdateRequest request = new LocationUpdateRequest();
+        request.setLatitude(message.getLatitude());
+        request.setLongitude(message.getLongitude());
+        request.setSpeed(message.getSpeed());
+        request.setHeading(message.getHeading());
+        request.setDriverId(message.getDriverId());
+        request.setTrackingSource(message.getTrackingSource());
 
         trackingService.updateBusLocation(message.getBusId(), request);
 

@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {OperatorMapper.class})
+@Mapper(componentModel = "spring", uses = {OperatorMapper.class, ServiceCategoryMapper.class})
 public interface BusMapper {
 
     @Mapping(target = "id", ignore = true)

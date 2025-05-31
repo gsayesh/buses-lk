@@ -1,6 +1,6 @@
 package lk.buses.bus.infrastructure.messaging;
 
-import lk.buses.common.core.events.BusLocationUpdatedEvent;
+import lk.buses.common.messaging.event.BusLocationUpdatedEvent;
 import lk.buses.common.messaging.publisher.EventPublisher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

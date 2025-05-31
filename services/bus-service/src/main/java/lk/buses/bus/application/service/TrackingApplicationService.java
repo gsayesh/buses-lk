@@ -5,7 +5,7 @@ import lk.buses.bus.application.dto.response.*;
 import lk.buses.bus.domain.entity.BusTracking;
 import lk.buses.bus.domain.service.TrackingDomainService;
 import lk.buses.bus.infrastructure.cache.BusLocationCache;
-import lk.buses.common.core.events.BusLocationUpdatedEvent;
+import lk.buses.common.messaging.event.BusLocationUpdatedEvent;
 import lk.buses.common.messaging.publisher.EventPublisher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
