@@ -11,7 +11,7 @@ spring:
     active: local
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/users_db
+    url: jdbc:postgresql://localhost:5433/users_db
     username: postgres
     password: postgres
     hikari:
