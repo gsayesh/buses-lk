@@ -4,6 +4,22 @@ server:
 spring:
   application:
     name: gateway-service
+
+  # Redis configuration with proper authentication
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:redis123}
+      timeout: 2000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: -1ms
+        shutdown-timeout: 100ms
+
   cloud:
     gateway:
       discovery:
@@ -24,6 +40,7 @@ spring:
               args:
                 redis-rate-limiter.replenishRate: 10
                 redis-rate-limiter.burstCapacity: 20
+                redis-rate-limiter.requestedTokens: 1
 
         - id: bus-service
           uri: lb://BUS-SERVICE
@@ -76,11 +93,6 @@ spring:
             allow-credentials: true
             max-age: 3600
 
-  redis:
-    host: ${REDIS_HOST:localhost}
-    port: ${REDIS_PORT:6379}
-    password: ${REDIS_PASSWORD:redis123}
-
 eureka:
   client:
     service-url:
@@ -110,3 +122,11 @@ management:
   endpoint:
     gateway:
       enabled: true
+  health:
+    redis:
+      enabled: true
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.data.redis: DEBUG
