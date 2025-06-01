@@ -11,9 +11,9 @@ spring:
     active: local
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/buses_db
+    url: jdbc:postgresql://localhost:5433/buses_db
     username: postgres
-    password: postgres123
+    password: postgres
     hikari:
       maximum-pool-size: 10
       minimum-idle: 5
