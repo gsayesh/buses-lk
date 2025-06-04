@@ -39,7 +39,7 @@
         <!-- Database -->
         <postgresql.version>42.7.3</postgresql.version>
         <hibernate-spatial.version>6.4.4.Final</hibernate-spatial.version>
-        <flyway.version>10.10.0</flyway.version>
+        <flyway.version>10.15.0</flyway.version>
 
         <!-- Messaging -->
         <spring-kafka.version>3.1.4</spring-kafka.version>

@@ -1,6 +1,4 @@
 #!/bin/bash
-# scripts/init-multiple-databases.sh
-
 set -e
 set -u
 
