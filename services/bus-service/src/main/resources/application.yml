@@ -72,6 +72,12 @@ eureka:
     prefer-ip-address: true
     instance-id: ${spring.application.name}:${random.value}
 
+# JWT Configuration - ADDED THIS SECTION
+jwt:
+  secret: ${JWT_SECRET:BusesLkSecretKey2025VeryLongAndSecureKey}
+  access-token-expiration: 3600
+  refresh-token-expiration: 86400
+
 management:
   endpoints:
     web:
