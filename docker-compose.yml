@@ -11,7 +11,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_MULTIPLE_DATABASES: users_db,buses_db,routes_db,bookings_db,payments_db,notifications_db
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - buses_postgres_data_v15:/var/lib/postgresql/data
       - ./scripts/init-multiple-databases.sh:/docker-entrypoint-initdb.d/init-multiple-databases.sh
     ports:
       - "5433:5432"
@@ -93,7 +93,7 @@ services:
       - "14268:14268"
 
 volumes:
-  postgres_data:
+  buses_postgres_data_v15:
   redis_data:
   rabbitmq_data:
   prometheus_data:
