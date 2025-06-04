@@ -6,6 +6,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -27,7 +28,7 @@ public class ServiceCategory {
     private lk.buses.common.core.enums.ServiceCategory category;
 
     @Column(name = "fare_multiplier", nullable = false, precision = 3, scale = 2)
-    private Double fareMultiplier;
+    private BigDecimal fareMultiplier;  // Changed from Double to BigDecimal
 
     @Column(name = "display_name_en", nullable = false, length = 50)
     private String displayNameEn;

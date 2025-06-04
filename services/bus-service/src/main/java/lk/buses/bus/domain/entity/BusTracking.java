@@ -47,11 +47,11 @@ public class BusTracking {
     @Column(columnDefinition = "geography(Point, 4326)")
     private Point location;
 
-    @Column(name = "speed_kmh", precision = 5, scale = 2)
-    private Double speedKmh;
+    @Column(name = "speed_kmh")
+    private Double speedKmh;  // Removed precision and scale
 
-    @Column(precision = 5, scale = 2)
-    private Double heading;
+    @Column
+    private Double heading;  // Removed precision and scale
 
     @Column(nullable = false)
     private Instant timestamp;
