@@ -4,6 +4,7 @@ import lk.buses.common.core.enums.ServiceCategory;
 import lombok.Builder;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,7 +13,7 @@ import java.util.UUID;
 public class ServiceCategoryResponse {
     private UUID id;
     private ServiceCategory category;
-    private Double fareMultiplier;
+    private BigDecimal fareMultiplier;
     private String displayNameEn;
     private String displayNameSi;
     private String displayNameTa;
