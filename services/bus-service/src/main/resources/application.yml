@@ -54,6 +54,14 @@ spring:
     password: admin123
     virtual-host: /
 
+  cloud:
+    config:
+      enabled: false
+      discovery:
+        enabled: false
+      import-check:
+        enabled: false
+
 eureka:
   client:
     service-url:
