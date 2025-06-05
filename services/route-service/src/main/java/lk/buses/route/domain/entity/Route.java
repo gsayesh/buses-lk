@@ -45,7 +45,7 @@ public class Route {
     @Column(name = "destination_city", nullable = false, length = 100)
     private String destinationCity;
 
-    @Column(name = "total_distance_km", precision = 10, scale = 2)
+    @Column(name = "total_distance_km")
     private Double totalDistanceKm;
 
     @Column(name = "is_rotational")
