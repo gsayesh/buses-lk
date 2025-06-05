@@ -45,10 +45,10 @@ public class RouteStop {
     @Column(name = "stop_name_ta", nullable = false, length = 100)
     private String stopNameTa;
 
-    @Column(precision = 10, scale = 8)
+    @Column
     private Double latitude;
 
-    @Column(precision = 11, scale = 8)
+    @Column
     private Double longitude;
 
     @Column(columnDefinition = "geography(Point, 4326)")

@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS routes (
     route_name_ta VARCHAR(200) NOT NULL,
     origin_city VARCHAR(100) NOT NULL,
     destination_city VARCHAR(100) NOT NULL,
-    total_distance_km DECIMAL(10,2),
+    total_distance_km DOUBLE PRECISION,
     is_rotational BOOLEAN DEFAULT false,
     route_photo_url TEXT,
     is_active BOOLEAN DEFAULT true,

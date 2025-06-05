@@ -42,16 +42,34 @@ spring:
       time-to-live: 3600000
       cache-null-values: false
 
-  redis:
+  # Updated Redis configuration - use spring.data.redis instead of spring.redis
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: redis123
+      timeout: 2000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+
+  # RabbitMQ configuration
+  rabbitmq:
     host: localhost
-    port: 6379
-    password: redis123
-    timeout: 2000ms
-    lettuce:
-      pool:
-        max-active: 8
-        max-idle: 8
-        min-idle: 0
+    port: 5672
+    username: admin
+    password: admin123
+    virtual-host: /
+
+  cloud:
+    config:
+      enabled: false
+      discovery:
+        enabled: false
+      import-check:
+        enabled: false
 
 eureka:
   client:
@@ -95,4 +113,3 @@ cache:
   travel-times:
     ttl: 1800
     max-size: 2000
-

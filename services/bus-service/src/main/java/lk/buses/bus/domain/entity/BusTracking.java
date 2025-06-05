@@ -38,20 +38,20 @@ public class BusTracking {
     @Enumerated(EnumType.STRING)
     private TrackingSource trackingSource;
 
-    @Column(nullable = false, precision = 10, scale = 8)
+    @Column(nullable = false)
     private Double latitude;
 
-    @Column(nullable = false, precision = 11, scale = 8)
+    @Column(nullable = false)
     private Double longitude;
 
     @Column(columnDefinition = "geography(Point, 4326)")
     private Point location;
 
     @Column(name = "speed_kmh")
-    private Double speedKmh;  // Removed precision and scale
+    private Double speedKmh;
 
     @Column
-    private Double heading;  // Removed precision and scale
+    private Double heading;
 
     @Column(nullable = false)
     private Instant timestamp;
