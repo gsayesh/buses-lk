@@ -25,16 +25,16 @@ SELECT
     is_major_stop
 FROM route,
      (VALUES
-          (1, 'Matara', 'මාතර', 'மாத்தறை', 5.9485, 80.5353, true),
-          (2, 'Weligama', 'වැලිගම', 'வெலிகம', 5.9667, 80.4297, false),
-          (3, 'Habaraduwa', 'හබරාදූව', 'ஹபராதுவ', 5.9961, 80.3184, false),
-          (4, 'Galle', 'ගාල්ල', 'காலி', 6.0535, 80.2210, true),
-          (5, 'Hikkaduwa', 'හික්කඩුව', 'ஹிக்கடுவ', 6.1396, 80.1039, false),
-          (6, 'Ambalangoda', 'අම්බලන්ගොඩ', 'அம்பலாங்கொட', 6.2367, 80.0540, false),
-          (7, 'Aluthgama', 'අලුත්ගම', 'அளுத்கம', 6.4336, 79.9992, false),
-          (8, 'Kalutara', 'කළුතර', 'களுத்துறை', 6.5854, 79.9607, true),
-          (9, 'Panadura', 'පානදුර', 'பாணந்துறை', 6.7132, 79.9026, false),
-          (10, 'Moratuwa', 'මොරටුව', 'மொறட்டுவ', 6.7733, 79.8825, false),
-          (11, 'Mount Lavinia', 'ගල්කිස්ස', 'கல்கிஸ்ஸ', 6.8389, 79.8630, false),
-          (12, 'Colombo', 'කොළඹ', 'கொழும்பு', 6.9271, 79.8612, true)
+          (1, 'Matara', 'මාතර', 'மாத்தறை', 5.9485::DOUBLE PRECISION, 80.5353::DOUBLE PRECISION, true),
+          (2, 'Weligama', 'වැලිගම', 'வெலிகம', 5.9667::DOUBLE PRECISION, 80.4297::DOUBLE PRECISION, false),
+          (3, 'Habaraduwa', 'හබරාදූව', 'ஹபராதுவ', 5.9961::DOUBLE PRECISION, 80.3184::DOUBLE PRECISION, false),
+          (4, 'Galle', 'ගාල්ල', 'காலி', 6.0535::DOUBLE PRECISION, 80.2210::DOUBLE PRECISION, true),
+          (5, 'Hikkaduwa', 'හික්කඩුව', 'ஹிக்கடுவ', 6.1396::DOUBLE PRECISION, 80.1039::DOUBLE PRECISION, false),
+          (6, 'Ambalangoda', 'අම්බලන්ගොඩ', 'அம்பலாங்கொட', 6.2367::DOUBLE PRECISION, 80.0540::DOUBLE PRECISION, false),
+          (7, 'Aluthgama', 'අලුත්ගම', 'அளுத்கம', 6.4336::DOUBLE PRECISION, 79.9992::DOUBLE PRECISION, false),
+          (8, 'Kalutara', 'කළුතර', 'களுத்துறை', 6.5854::DOUBLE PRECISION, 79.9607::DOUBLE PRECISION, true),
+          (9, 'Panadura', 'පානදුර', 'பாணந்துறை', 6.7132::DOUBLE PRECISION, 79.9026::DOUBLE PRECISION, false),
+          (10, 'Moratuwa', 'මොරටුව', 'மொறட்டுவ', 6.7733::DOUBLE PRECISION, 79.8825::DOUBLE PRECISION, false),
+          (11, 'Mount Lavinia', 'ගල්කිස්ස', 'கல்கிஸ்ஸ', 6.8389::DOUBLE PRECISION, 79.8630::DOUBLE PRECISION, false),
+          (12, 'Colombo', 'කොළඹ', 'கொழும்பு', 6.9271::DOUBLE PRECISION, 79.8612::DOUBLE PRECISION, true)
      ) AS stops(stop_sequence, stop_name_en, stop_name_si, stop_name_ta, latitude, longitude, is_major_stop);
