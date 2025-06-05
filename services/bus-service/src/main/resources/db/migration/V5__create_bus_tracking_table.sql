@@ -7,8 +7,8 @@ CREATE TABLE IF NOT EXISTS bus_tracking (
     latitude DECIMAL(10,8) NOT NULL,
     longitude DECIMAL(11,8) NOT NULL,
     location GEOGRAPHY(POINT, 4326),
-    speed_kmh DOUBLE PRECISION,  -- Changed from DECIMAL(5,2) to DOUBLE PRECISION
-    heading DOUBLE PRECISION,    -- Changed from DECIMAL(5,2) to DOUBLE PRECISION
+    speed_kmh DOUBLE PRECISION,
+    heading DOUBLE PRECISION,
     timestamp TIMESTAMP WITH TIME ZONE NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
                              );
